@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>Product</h3>
+<p>
+    <a th:href="@{create}">
+        Add new product
+    </a>
+</p>
+<div class="notify">
+    <div th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+<table id="products">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Img</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${products}">
+        <td th:text="${row.getId()}"></td>
+        <td th:text="${row.getName()}"></td>
+        <td><img th:src="${row.getImg()}" height="200" width="250"></td>
+        <td th:text="${row.getPrice()}"></td>
+        <td th:text="${row.category.getName()}"></td>
+        <td><a th:href="@{/edit/{id} (id=${row.id})}">Edit</a></td>
+        <td><a th:href="@{/delete/{id} (id=${row.id})}"  onclick= "return confirm('thích thì xóa đi')">Delete</a></td>
+        <td><a th:href="@{/view/{id} (id=${row.getId()})}">View</a></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<button th:if="${products.hasPrevious()}"><a th:href="@{/products(page=${products.number}-1)}"><<<</a></button>
+    <b th:text="${products.number} +1"></b> / <b th:text="${products.totalPages}"></b>
+    <button th:if="${products.hasNext()}"><a th:href="@{/products(page=${products.number}+1 )}">>>></a></button>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
